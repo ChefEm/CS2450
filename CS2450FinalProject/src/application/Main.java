@@ -142,7 +142,6 @@ public class Main extends Application {
         return itemButton;
     }
     
-  
 
     public static void main(String[] args) {
         launch(args);
