@@ -96,7 +96,6 @@ public class Main extends Application {
         return menuBar;
     }
 
-
     private void switchToSection(String section) {
         BorderPane borderPane = new BorderPane();
         MenuBar menuBar = createMenuBar();
@@ -142,7 +141,6 @@ public class Main extends Application {
         return itemButton;
     }
     
-
     public static void main(String[] args) {
         launch(args);
     }
