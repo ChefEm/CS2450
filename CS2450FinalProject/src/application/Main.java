@@ -1,22 +1,30 @@
 package application;
-	
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Application {
 
     private Stage primaryStage;
+    private Cart cart = new Cart();
+    private Label cartItemCountLabel = new Label("Cart Items: 0");
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("JavaFX Shopping App");
-        primaryStage.setScene(createLoginScene());
+
+        Scene scene = createLoginScene();
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
@@ -26,7 +34,6 @@ public class Main extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
-
 
         Label userNameLabel = new Label("Username:");
         gridPane.add(userNameLabel, 0, 1);
@@ -53,6 +60,7 @@ public class Main extends Application {
         MenuBar menuBar = createMenuBar();
         borderPane.setTop(menuBar);
         borderPane.setCenter(createSectionView("Home"));
+        borderPane.setBottom(cartItemCountLabel);
 
         Scene scene = new Scene(borderPane, 800, 600);
         primaryStage.setScene(scene);
@@ -61,12 +69,10 @@ public class Main extends Application {
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
-        // Create "Home" menu
         Menu homeMenu = new Menu("Home");
         MenuItem homeItem = new MenuItem("Home");
         homeItem.setOnAction(e -> switchToSection("Home"));
 
-        // Create Menus
         Menu menMenu = new Menu("Men");
         MenuItem menItem = new MenuItem("Men's Clothing");
         menItem.setOnAction(e -> switchToSection("Men's Clothing"));
@@ -83,14 +89,12 @@ public class Main extends Application {
         MenuItem cartItem = new MenuItem("Shopping Cart");
         cartItem.setOnAction(e -> switchToSection("Shopping Cart"));
 
-        // Add MenuItems to Menus
         homeMenu.getItems().add(homeItem);
         menMenu.getItems().add(menItem);
         womenMenu.getItems().add(womenItem);
         kidsMenu.getItems().add(kidsItem);
         cartMenu.getItems().add(cartItem);
 
-        // Add Menus to MenuBar
         menuBar.getMenus().addAll(homeMenu, menMenu, womenMenu, kidsMenu, cartMenu);
 
         return menuBar;
@@ -100,7 +104,13 @@ public class Main extends Application {
         BorderPane borderPane = new BorderPane();
         MenuBar menuBar = createMenuBar();
         borderPane.setTop(menuBar);
-        borderPane.setCenter(createSectionView(section));
+
+        if ("Shopping Cart".equals(section)) {
+            borderPane.setCenter(createCartView());
+        } else {
+            borderPane.setCenter(createSectionView(section));
+        }
+
         primaryStage.setScene(new Scene(borderPane, 800, 600));
     }
 
@@ -111,19 +121,15 @@ public class Main extends Application {
 
         Label sectionLabel = new Label(sectionTitle);
         sectionLabel.setStyle("-fx-font-size: 24px;");
-
         vBox.getChildren().add(sectionLabel);
 
-
         if ("Home".equals(sectionTitle)) {
-
             vBox.getChildren().addAll(
                 createItemButton("Men's Item 1"),
                 createItemButton("Women's Item 1"),
                 createItemButton("Kids' Item 1")
             );
         } else {
-            // Add two placeholder items for other sections
             vBox.getChildren().addAll(
                 createItemButton(sectionTitle + " Item 1"),
                 createItemButton(sectionTitle + " Item 2")
@@ -133,15 +139,86 @@ public class Main extends Application {
         return vBox;
     }
 
-    // Helper method to create a button for an item
     private Button createItemButton(String itemName) {
         Button itemButton = new Button("Add " + itemName + " to Cart");
-
-        itemButton.setOnAction(event -> System.out.println(itemName + " added to cart!"));
+        itemButton.setOnAction(event -> {
+            cart.addItem(itemName);
+            updateCartItemCount();
+            showAddedToCartPopup(itemName);
+        });
         return itemButton;
     }
-    
+
+    private VBox createCartView() {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(20);
+
+        Label cartLabel = new Label("Shopping Cart");
+        cartLabel.setStyle("-fx-font-size: 24px;");
+        vBox.getChildren().add(cartLabel);
+
+        for (Map.Entry<String, Integer> entry : cart.getItems().entrySet()) {
+            String itemName = entry.getKey();
+            Integer itemCount = entry.getValue();
+
+            Label itemLabel = new Label(itemName + " - Quantity: " + itemCount);
+            vBox.getChildren().add(itemLabel);
+        }
+
+        return vBox;
+    }
+
+    private void showAddedToCartPopup(String itemName) {
+        Stage popupStage = new Stage();
+        popupStage.initOwner(primaryStage);
+        popupStage.initModality(Modality.NONE);
+        popupStage.initStyle(StageStyle.UNDECORATED);
+
+        VBox popupContent = new VBox(10);
+        popupContent.setAlignment(Pos.CENTER);
+        popupContent.setStyle("-fx-padding: 10; -fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 2;");
+
+        Label addedLabel = new Label(itemName + " added to cart!");
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> popupStage.close());
+
+        popupContent.getChildren().addAll(addedLabel, closeButton);
+
+        Scene popupScene = new Scene(popupContent, 200, 100);
+        popupStage.setScene(popupScene);
+
+        popupStage.setX(primaryStage.getX() + primaryStage.getWidth());
+        popupStage.setY(primaryStage.getY());
+
+        popupStage.show();
+    }
+
+    private void updateCartItemCount() {
+        cartItemCountLabel.setText("Cart Items: " + cart.getTotalItemCount());
+    }
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public class Cart {
+        private Map<String, Integer> items;
+
+        public Cart() {
+            items = new HashMap<>();
+        }
+
+        public void addItem(String item) {
+            items.put(item, items.getOrDefault(item, 0) + 1);
+        }
+
+        public int getTotalItemCount() {
+            return items.values().stream().mapToInt(Integer::intValue).sum();
+        }
+
+        public Map<String, Integer> getItems() {
+            return items;
+        }
     }
 }
