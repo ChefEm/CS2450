@@ -21,7 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("JavaFX Shopping App");
+        primaryStage.setTitle("kiskissing.com");
 
         Scene scene = createLoginScene();
         primaryStage.setScene(scene);
@@ -56,24 +56,28 @@ public class Main extends Application {
     }
 
     private void showDashboard() {
-       TextField searchField = new TextField();
+      TextField searchField = new TextField();
     	Label searchLabel = new Label("Search:");
         searchLabel.setPadding(new Insets(5));
          
     	HBox searchBox = new HBox(searchLabel,searchField);
     	VBox searhAndCartBox = new VBox(searchBox, cartItemCountLabel);
     	VBox homeSectionView= new VBox( createSectionView("Home"));
-        homeSectionView.setPadding(new Insets(50));
+        
     	 
-        BorderPane borderPane = new BorderPane();
+        BorderPane borderPaneBar = new BorderPane();
         MenuBar menuBar = createMenuBar();
-        borderPane.setTop(menuBar);
-        borderPane.setRight(searhAndCartBox);
+        borderPaneBar.setTop(menuBar);
+        borderPaneBar.setRight(searhAndCartBox);
         
         
-        VBox Pane= new VBox(borderPane, homeSectionView);
+        BorderPane mainPane= new BorderPane();
+        mainPane.setTop(borderPaneBar);
+        mainPane.setCenter(homeSectionView);
+        
+ 
 
-        Scene scene = new Scene(Pane, 800, 600);
+        Scene scene = new Scene(mainPane, 800, 600);
         primaryStage.setScene(scene);
         
     }
@@ -131,9 +135,14 @@ public class Main extends Application {
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
 
-        Label sectionLabel = new Label(sectionTitle);
-        sectionLabel.setStyle("-fx-font-size: 24px;");
-        vBox.getChildren().add(sectionLabel);
+       // Label sectionLabel = new Label(sectionTitle);
+        //sectionLabel.setStyle("-fx-font-size: 24px;");
+       // FileInputStream inputStream = new FileInputStream("Logo.png");
+        Image logo = new Image("Logo.png");
+        ImageView logoView = new ImageView(logo);
+     
+        
+       vBox.getChildren().add(logoView);
 
         if ("Home".equals(sectionTitle)) {
             vBox.getChildren().addAll(
