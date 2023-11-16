@@ -15,6 +15,8 @@ import javafx.stage.StageStyle;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class Main extends Application {
 
     private Stage primaryStage;
@@ -28,24 +30,52 @@ public class Main extends Application {
         primaryStage.setTitle("viviennewestwood.com");
 
         // Create the initial layout with logoView
+        TextField searchField = new TextField();
+        searchField.setPrefWidth(300);
+        searchField.setPromptText("Search.... ");
+        searchField.setStyle("-fx-focus-color:white; -fx-faint-focus-color:white; -fx-background-color:#d6ccc2; ");
+     
+        
+        ImageView searchView = new ImageView("searchIcon.png");
+        searchView.setFitWidth(40);
+        searchView.setFitHeight(40);
+    	
+        Label searchLabel = new Label();
+        searchLabel.setGraphic(searchView);
+        HBox searchBox = new HBox(searchLabel, searchField);
+       // searchBox.setPadding(new Insets(5));
+        searchBox.setAlignment(Pos.CENTER_RIGHT);
+        
+
+        // Create the top bar with the menu bar and the search box
+        BorderPane topBar = new BorderPane ();
+        topBar.setTop(createMenuBar());
+        topBar.setRight(searchBox);
+        
+     
+        
         BorderPane mainLayout = new BorderPane();
-        mainLayout.setTop(createMenuBar());
-        VBox mainContent = createMainPageView(); // This creates the view with logoView
-        mainContent.setAlignment(Pos.CENTER);
-        mainLayout.setCenter(mainContent);
+        mainLayout.setTop(topBar);
+        //mainLayout.setRight(searchBox);
+        mainLayout.setCenter(createMainPageView());
+        mainLayout.setStyle("-fx-background-color: white;");
+        
+        //mainLayout.setAlignment(Pos.CENTER); // Center the main content
+        //mainLayout.setCenter(mainContent);
 
         ScrollPane scrollPane = new ScrollPane(mainLayout);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
+        //primaryStage.setScene(new Scene(scrollPane, 1200, 800));
         
         // Set the scene to the primary stage
-        primaryStage.setScene(new Scene(scrollPane, 1200, 800));
+        primaryStage.setScene(new Scene(scrollPane, 1475,850));
         primaryStage.show();
     }
 
     
     private VBox createMainPageView() {
-        VBox mainPageView = new VBox(10); // Spacing between elements
+        VBox mainPageView = new VBox(); // Spacing between elements
         mainPageView.setAlignment(Pos.CENTER); // Center alignment
 
         ImageView logoView = createLogoView();
@@ -66,27 +96,46 @@ public class Main extends Application {
         
 
         logoView.setOnMouseClicked(event -> {
+        	 // Create the initial layout with logoView
+            TextField searchField = new TextField();
+            searchField.setPrefWidth(300);
+            searchField.setPromptText("Search.... ");
+            searchField.setStyle("-fx-focus-color:white; -fx-faint-focus-color:white; -fx-background-color:#d6ccc2; ");
+         
+            
+            ImageView searchView = new ImageView("searchIcon.png");
+            searchView.setFitWidth(40);
+            searchView.setFitHeight(40);
+        	
+            Label searchLabel = new Label();
+            searchLabel.setGraphic(searchView);
+            HBox searchBox = new HBox(searchLabel, searchField);
+            //searchBox.setPadding(new Insets(5));
+            searchBox.setAlignment(Pos.CENTER_RIGHT);
+            
+
+            // Create the top bar with the menu bar and the search box
+            BorderPane topBar = new BorderPane ();
+            topBar.setTop(createMenuBar());
+            topBar.setRight(searchBox);
+            
+         
+            
             BorderPane mainLayout = new BorderPane();
-            mainLayout.setTop(createMenuBar());
-            VBox mainContent = createMainPageView();
-            mainContent.setAlignment(Pos.CENTER); // Center the main content
-            mainLayout.setCenter(mainContent);
+            mainLayout.setTop(topBar);
+            //mainLayout.setRight(searchBox);
+            mainLayout.setCenter(createMainPageView());
+            mainLayout.setStyle("-fx-background-color: white;");
+            
+            //mainLayout.setAlignment(Pos.CENTER); // Center the main content
+            //mainLayout.setCenter(mainContent);
 
             ScrollPane scrollPane = new ScrollPane(mainLayout);
             scrollPane.setFitToWidth(true);
             scrollPane.setFitToHeight(true);
-            primaryStage.setScene(new Scene(scrollPane, 1200, 800));
+            primaryStage.setScene(new Scene(scrollPane, 1415, 850));
             
-            TextField searchField = new TextField();
-            Label searchLabel = new Label("Search:");
-            HBox searchBox = new HBox(searchLabel, searchField);
-            searchBox.setPadding(new Insets(5));
-            searchBox.setAlignment(Pos.CENTER_RIGHT);
-
-            // Create the top bar with the menu bar and the search box
-            HBox topBar = new HBox(createMenuBar(), searchBox);
-            topBar.setAlignment(Pos.CENTER);
-            HBox.setHgrow(searchBox, Priority.ALWAYS);
+            
             
             
         });
@@ -197,26 +246,77 @@ public class Main extends Application {
 
         return new Scene(gridPane, 500, 500);
     }
-    
-
+ 
 
     private MenuBar createMenuBar() {
-        MenuBar menuBar = new MenuBar();
+          Menu homeMenu = new Menu("Home");
+          MenuItem homeItem = new MenuItem("Go to Home");
+          homeItem.setOnAction(event ->{
+          
+          TextField searchField = new TextField();
+          searchField.setPrefWidth(300);
+          searchField.setPromptText("Search.... ");
+          searchField.setStyle("-fx-focus-color:white; -fx-faint-focus-color:white; -fx-background-color:#d6ccc2; ");
+       
+          
+          ImageView searchView = new ImageView("searchIcon.png");
+          searchView.setFitWidth(40);
+          searchView.setFitHeight(40);
+      	
+          Label searchLabel = new Label();
+          searchLabel.setGraphic(searchView);
+          HBox searchBox = new HBox(searchLabel, searchField);
+          //searchBox.setPadding(new Insets(5));
+          searchBox.setAlignment(Pos.CENTER_RIGHT);
+          
 
+          // Create the top bar with the menu bar and the search box
+          BorderPane topBar = new BorderPane ();
+          topBar.setTop(createMenuBar());
+          topBar.setRight(searchBox);
+          
+       
+          
+          BorderPane mainLayout = new BorderPane();
+          mainLayout.setTop(topBar);
+          //mainLayout.setRight(searchBox);
+          mainLayout.setCenter(createMainPageView());
+          mainLayout.setStyle("-fx-background-color: white;");
+          
+          
+          //mainLayout.setAlignment(Pos.CENTER); // Center the main content
+          //mainLayout.setCenter(mainContent);
+
+          ScrollPane scrollPane = new ScrollPane(mainLayout);
+          scrollPane.setFitToWidth(true);
+          scrollPane.setFitToHeight(true);
+          primaryStage.setScene(new Scene(scrollPane, 1415, 850));
+          }
+          );
+          homeMenu.getItems().add(homeItem);
+        
+        MenuBar menuBar = new MenuBar();
         Menu menMenu = new Menu("Men");
         MenuItem menItem = new MenuItem("Men's Clothing");
         menItem.setOnAction(e -> switchToSection("Men's Clothing"));
         menMenu.getItems().add(menItem);
+       // menMenu.setStyle("-fx-text-fill: white; ");
 
         Menu womenMenu = new Menu("Women");
         MenuItem womenItem = new MenuItem("Women's Clothing");
-        womenItem.setOnAction(e -> switchToSection("Women's Clothing"));
+        womenItem.setOnAction(e -> switchToSection("Women"));
         womenMenu.getItems().add(womenItem);
-
+        
+     
+     
+        		
         Menu bridalMenu = new Menu("Bridal");
+        //bridalMenu.setStyle(" -fx-text-fill: white;");
+       
         MenuItem bridalItem = new MenuItem("Bridal' Clothing");
         bridalMenu.setOnAction(e -> switchToSection("Bridal' Clothing"));
         bridalMenu.getItems().add(bridalItem);
+       
 
         Menu cartMenu = new Menu("Cart");
         MenuItem cartItem = new MenuItem("Shopping Cart");
@@ -226,14 +326,18 @@ public class Main extends Application {
         Menu accountMenu = new Menu("Account");
         MenuItem loginItem = new MenuItem("Login");
         loginItem.setOnAction(e -> primaryStage.setScene(createLoginScene()));
+        
+       // Menu fillMenu= new Menu("                                                                                                                  ");
 
         MenuItem createAccountItem = new MenuItem("Create Account");
         createAccountItem.setOnAction(e -> primaryStage.setScene(createAccountCreationScene()));
 
         accountMenu.getItems().addAll(loginItem, createAccountItem);
 
-        menuBar.getMenus().addAll(menMenu, womenMenu, bridalMenu, cartMenu, accountMenu);
-        menuBar.setStyle("-fx-background-color: #4a5759; -fx-font-size: 16px; fx-text-color: white;");
+        menuBar.getMenus().addAll(homeMenu,menMenu, womenMenu, bridalMenu, cartMenu,accountMenu);
+        menuBar.setStyle(" -fx-background-color: #4a5759; ");
+       
+        menuBar.getStylesheets().add("application/application.css");
 
         return menuBar;
     }
@@ -248,10 +352,10 @@ public class Main extends Application {
             borderPane.setCenter(createSectionView("Home"));
         } else if ("Shopping Cart".equals(section)) {
             borderPane.setCenter(createCartView());
-        } else if ("Bridal".equals(section)) {
-            borderPane.setCenter(maternityPane());
-        } else if ("Special".equals(section)) {
-            borderPane.setCenter(specialPane());
+        } else if ("Women".equals(section)) {
+            borderPane.setCenter(createSectionView("Women"));
+        } else if ("Men".equals(section)) {
+            borderPane.setCenter(createSectionView("Men"));
         } else {
             // Default case for other sections, if any
             borderPane.setCenter(createSectionView(section));
@@ -269,45 +373,76 @@ public class Main extends Application {
             ImageView logoView = createLogoView();
             vBox.getChildren().add(logoView);
         }
-        
-    
-
-       // Label sectionLabel = new Label(sectionTitle);
-        //sectionLabel.setStyle("-fx-font-size: 24px;");
-       // FileInputStream inputStream = new FileInputStream("Logo.png");
-
-
+  
         if ("Home".equals(sectionTitle)) {
         
-        Image special = new Image("mainImage.jpg");
-        ImageView specialView = new ImageView(special);
-        specialView.setFitWidth(1000);
-        specialView.setFitHeight(500);
-        vBox.getChildren().add(specialView);
-        specialView.setOnMouseClicked(event -> {
-        	switchToSection("Special");
-           
-        });
-    	
-        	
-        HBox hbox= new HBox();
-        hbox.setSpacing(10);
-        hbox.setPadding(new Insets(10));
-        hbox.setAlignment(Pos.CENTER);
-        hbox.getChildren().addAll(
-        		sectionImageButton("temp.jpg","Maternity"),
-        		sectionImageButton("temp.jpg","Kid"),
-        		sectionImageButton("temp.jpg","Baby")
-        		);
         
-        ;
-        vBox.getChildren().addAll(hbox);
-           
-        } else {
-            vBox.getChildren().addAll(
-                createItemButton(sectionTitle + " Item 1"),
-                createItemButton(sectionTitle + " Item 2")
-            );
+			        HBox maiProducts = new HBox();
+			        maiProducts.getChildren().addAll(
+			    		   imageMainBox("f2.jpeg","Jewelry"), 
+			    		   imageMainBox("f1.jpg","Women"),
+			    		   imageMainBox("men.jpg","Men"),
+			    		   imageMainBox("f4.jpg","Shoes"),
+			    		   imageMainBox("bridal.jpg","Bridal")
+			    		   );
+			       
+			        maiProducts.setSpacing(10);
+			        maiProducts.setAlignment(Pos.CENTER);
+			         
+			        HBox hbox= new HBox();
+			        hbox.setSpacing(10);
+			        hbox.setPadding(new Insets(10));
+			        hbox.setAlignment(Pos.CENTER);
+			        ImageView featured = new ImageView("featured.png");
+			        featured.setFitWidth(700);
+			        featured.setFitHeight(100);
+			        hbox.getChildren().addAll(featured);
+			        hbox.setPadding(new Insets(200,0,10,0));
+			        
+			        ;
+			        vBox.getChildren().addAll(maiProducts,hbox);
+			        vBox.setPadding(new Insets(0,150,0,100));
+			           
+        } else if("Women".equals(sectionTitle)) {
+        	VBox womanBox= new VBox();
+        	Label name= new Label("WOMEN'S DRESSES");
+        	name.getStylesheets().add("application/application.css");
+        	name.setAlignment(Pos.CENTER);
+        	
+        	
+    
+        	womanBox.getChildren().addAll(name, womanPane());
+        	womanBox.setAlignment(Pos.CENTER);
+        	vBox.getChildren().addAll(womanBox);
+        	vBox.setStyle("-fx-background-color: white;");
+
+        }else if("Men".equals(sectionTitle)) {
+        	
+        	VBox menBox= new VBox();
+        	Label name= new Label("MEN'S DRESSES");
+        	name.getStylesheets().add("application/application.css");
+        	name.setAlignment(Pos.CENTER);
+        	
+        	
+    
+        	menBox.getChildren().addAll(name, menPane());
+        	menBox.setAlignment(Pos.CENTER);
+        	vBox.getChildren().addAll(menBox);
+        	vBox.setStyle("-fx-background-color: white;");
+        	
+        	}
+        else {
+        	VBox womanBox= new VBox();
+        	Label name= new Label("Temp Tille");
+        	name.getStylesheets().add("application/application.css");
+        	name.setAlignment(Pos.CENTER);
+        	
+        	
+    
+        	ImageView tempView = new ImageView("bridal.jpg");
+        	vBox.getChildren().addAll(name,tempView);
+        	vBox.setStyle("-fx-background-color: white;");
+            
         }
 
         return vBox;
@@ -321,12 +456,44 @@ public class Main extends Application {
         
         return  imageView;
     }
+    private ImageView importImagePane(String imageName)
+    {
+    	ImageView imageView = new ImageView(imageName);
+    	imageView.setFitWidth(250);
+        imageView.setFitHeight(300);
+        
+        return  imageView;
+    }
     
     private VBox imageAndButtonBox(String name, String buttonName) 
  
     {
     	
     	VBox vbox= new VBox(importImage(name),createItemButton(buttonName));
+    	
+    	return vbox;
+    }
+    
+    private VBox imageMainBox(String name, String buttonName) 
+    
+    {
+    	ImageView image = new ImageView(name);
+    	image.setFitWidth(200);
+    	image.setFitHeight(300);
+    	
+    
+        Button nameButton = new Button (buttonName);
+        nameButton.setOnAction(event ->{
+    	    		switchToSection(buttonName);
+    	    		
+    	    	});
+        nameButton.getStylesheets().add("application/application.css");
+        nameButton.setPrefWidth(200);
+    	    	
+    	    
+    	VBox vbox= new VBox(image,nameButton);
+    	vbox.setAlignment(Pos.CENTER);
+    	
     	
     	return vbox;
     }
@@ -475,13 +642,54 @@ public class Main extends Application {
         popupStage.showAndWait();
     }
 
-    private GridPane maternityPane()
+    private GridPane womanPane()
     {
+    
     	GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.add(importImagePane("w1.jpg"), 0, 0);
+        gridPane.add(importImagePane("w2.jpg"), 1, 0);
+        gridPane.add(importImagePane("w3.jpg"), 2, 0);
+        gridPane.add(importImagePane("w4.jpg"), 3, 0);
+        gridPane.add(importImagePane("w5.jpg"), 0, 1);
+        gridPane.add(importImagePane("w6.jpg"), 1, 1);
+        gridPane.add(importImagePane("w7.jpg"), 2, 1);
+        gridPane.add(importImagePane("w8.jpg"), 3, 1);
+        gridPane.add(importImagePane("w5.jpg"), 0, 2);
+        gridPane.add(importImagePane("w6.jpg"), 1, 2);
+        gridPane.add(importImagePane("w7.jpg"), 2, 2);
+        gridPane.add(importImagePane("w8.jpg"), 3, 2);
+         
+        
+        //gridPane.getChildren().addAll(importImage("logo.png"));
+        return gridPane;
+    }
+
+    private GridPane menPane()
+    {
+    
+    	GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.add(importImagePane("m1.jpg"), 0, 0);
+        gridPane.add(importImagePane("m2.jpg"), 1, 0);
+        gridPane.add(importImagePane("m3.jpg"), 2, 0);
+        gridPane.add(importImagePane("m4.jpeg"), 3, 0);
+        gridPane.add(importImagePane("m1.jpg"), 0, 1);
+        gridPane.add(importImagePane("m2.jpg"), 1, 1);
+        gridPane.add(importImagePane("m3.jpg"), 2, 1);
+        gridPane.add(importImagePane("m4.jpeg"), 3, 1);
+        gridPane.add(importImagePane("m1.jpg"), 0, 2);
+        gridPane.add(importImagePane("m2.jpg"), 1, 2);
+        gridPane.add(importImagePane("m3.jpg"), 2, 2);
+        gridPane.add(importImagePane("m4.jpeg"), 3, 2);
+         
+    
         //gridPane.getChildren().addAll(importImage("logo.png"));
         return gridPane;
     }
