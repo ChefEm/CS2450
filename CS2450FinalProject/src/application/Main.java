@@ -23,7 +23,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("kiskissing.com");
+         primaryStage.setTitle("viviennewestwood.com");
 
         Scene scene = createLoginScene();
         
@@ -105,9 +105,9 @@ public class Main extends Application {
         MenuItem womenItem = new MenuItem("Women's Clothing");
         womenItem.setOnAction(e -> switchToSection("Women's Clothing"));
 
-        Menu kidsMenu = new Menu("Kids");
-        MenuItem kidsItem = new MenuItem("Kids' Clothing");
-        kidsItem.setOnAction(e -> switchToSection("Kids' Clothing"));
+        Menu bridalMenu = new Menu("Bridal");
+        MenuItem kidsItem = new MenuItem("Bridal' Clothing");
+        kidsItem.setOnAction(e -> switchToSection("Bridal' Clothing"));
 
         Menu cartMenu = new Menu("Cart");
         MenuItem cartItem = new MenuItem("Shopping Cart");
@@ -116,11 +116,11 @@ public class Main extends Application {
         homeMenu.getItems().add(homeItem);
         menMenu.getItems().add(menItem);
         womenMenu.getItems().add(womenItem);
-        kidsMenu.getItems().add(kidsItem);
+        bridalMenu.getItems().add(kidsItem);
         cartMenu.getItems().add(cartItem);
 
-        menuBar.getMenus().addAll(homeMenu, menMenu, womenMenu, kidsMenu, cartMenu);
-        menuBar.setStyle("-fx-background-color: #e7c60a;");
+        menuBar.getMenus().addAll(homeMenu, menMenu, womenMenu, bridalMenu, cartMenu);
+        menuBar.setStyle("-fx-background-color: #4a5759; -fx-font-size: 16px;  fx-text-color: white;");
 
         return menuBar;
     }
@@ -155,16 +155,16 @@ public class Main extends Application {
        // Label sectionLabel = new Label(sectionTitle);
         //sectionLabel.setStyle("-fx-font-size: 24px;");
        // FileInputStream inputStream = new FileInputStream("Logo.png");
-        Image logo = new Image("Logo.png");
+        Image logo = new Image("logo.jpg");
         ImageView logoView = new ImageView(logo);
         logoView.setFitWidth(250);
-        logoView.setFitHeight(70);
+        logoView.setFitHeight(150);
         
         vBox.getChildren().add(logoView);
 
         if ("Home".equals(sectionTitle)) {
         
-        Image special = new Image("special.jpg");
+        Image special = new Image("mainImage.jpg");
         ImageView specialView = new ImageView(special);
         specialView.setFitWidth(1000);
         specialView.setFitHeight(500);
