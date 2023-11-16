@@ -389,14 +389,17 @@ public class Main extends Application {
 			        maiProducts.setSpacing(10);
 			        maiProducts.setAlignment(Pos.CENTER);
 			         
-			        HBox hbox= new HBox();
+			        VBox hbox= new VBox();
 			        hbox.setSpacing(10);
 			        hbox.setPadding(new Insets(10));
 			        hbox.setAlignment(Pos.CENTER);
 			        ImageView featured = new ImageView("featured.png");
 			        featured.setFitWidth(700);
 			        featured.setFitHeight(100);
-			        hbox.getChildren().addAll(featured);
+			        Label name= new Label("Shop Our Latest Arrivals!");
+		        	name.getStylesheets().add("application/application.css");
+			        
+			        hbox.getChildren().addAll(name, featured);
 			        hbox.setPadding(new Insets(200,0,10,0));
 			        
 			        ;
