@@ -27,10 +27,22 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("viviennewestwood.com");
 
-        Scene scene = createLoginScene();
-        primaryStage.setScene(scene);
+        // Create the initial layout with logoView
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(createMenuBar());
+        VBox mainContent = createMainPageView(); // This creates the view with logoView
+        mainContent.setAlignment(Pos.CENTER);
+        mainLayout.setCenter(mainContent);
+
+        ScrollPane scrollPane = new ScrollPane(mainLayout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        
+        // Set the scene to the primary stage
+        primaryStage.setScene(new Scene(scrollPane, 1200, 800));
         primaryStage.show();
     }
+
     
     private VBox createMainPageView() {
         VBox mainPageView = new VBox(10); // Spacing between elements
@@ -88,7 +100,7 @@ public class Main extends Application {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
 
         // Add a title at the top
-        Label titleLabel = new Label("Welcome!");
+        Label titleLabel = new Label("Login Page");
         titleLabel.setFont(new Font("Arial", 24));
         gridPane.add(titleLabel, 1, 0);
 
@@ -114,54 +126,75 @@ public class Main extends Application {
         Button loginButton = new Button("Sign in");
         loginButton.setOnAction(event -> {
             currentUsername = userTextField.getText();
-            showDashboard();
+            // Update here to show the logoView scene instead of dashboard
+            BorderPane mainLayout = new BorderPane();
+            mainLayout.setTop(createMenuBar());
+            VBox mainContent = createMainPageView(); // This creates the view with logoView
+            mainContent.setAlignment(Pos.CENTER);
+            mainLayout.setCenter(mainContent);
+
+            ScrollPane scrollPane = new ScrollPane(mainLayout);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+            primaryStage.setScene(new Scene(scrollPane, 1200, 800));
         });
         gridPane.add(loginButton, 1, 6);
 
-        Button createAccountButton = new Button("Create Account");
-        createAccountButton.setOnAction(event -> primaryStage.setScene(createAccountCreationScene()));
-        gridPane.add(createAccountButton, 1, 7);
-
-        return new Scene(gridPane, 300, 275);
+        return new Scene(gridPane, 500, 500);
     }
     
     private Scene createAccountCreationScene() {
-        GridPane gridPane = new GridPane();
+    	GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
 
+        // Add a title at the top
+        Label titleLabel = new Label("Account Creation Page");
+        titleLabel.setFont(new Font("Arial", 24));
+        gridPane.add(titleLabel, 1, 0);
+
+        // Load and add an image to the left side
+        Image image = new Image("logo.jpg"); // Update the path
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+        gridPane.add(imageView, 0, 1, 1, 3);
+
         Label userNameLabel = new Label("Username:");
-        gridPane.add(userNameLabel, 0, 1);
+        gridPane.add(userNameLabel, 0, 4);
 
         TextField userTextField = new TextField();
-        gridPane.add(userTextField, 1, 1);
+        gridPane.add(userTextField, 1, 4);
 
         Label pwLabel = new Label("Password:");
-        gridPane.add(pwLabel, 0, 2);
+        gridPane.add(pwLabel, 0, 5);
 
         PasswordField pwBox = new PasswordField();
-        gridPane.add(pwBox, 1, 2);
+        gridPane.add(pwBox, 1, 5);
 
-        Button createAccountButton = new Button("Create Account");
-        createAccountButton.setOnAction(event -> handleAccountCreation(userTextField.getText(), pwBox.getText()));
+        Button loginButton = new Button("Create Account");
+        loginButton.setOnAction(event -> {
+            currentUsername = userTextField.getText();
+            // Update here to show the logoView scene instead of dashboard
+            BorderPane mainLayout = new BorderPane();
+            mainLayout.setTop(createMenuBar());
+            VBox mainContent = createMainPageView(); // This creates the view with logoView
+            mainContent.setAlignment(Pos.CENTER);
+            mainLayout.setCenter(mainContent);
 
-        gridPane.add(createAccountButton, 1, 4);
+            ScrollPane scrollPane = new ScrollPane(mainLayout);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+            primaryStage.setScene(new Scene(scrollPane, 1200, 800));
+        });
+        gridPane.add(loginButton, 1, 6);
 
-        return new Scene(gridPane, 300, 275);
+
+        return new Scene(gridPane, 500, 500);
     }
     
-    private void handleAccountCreation(String username, String password) {
-        // Add logic to create an account
-        // This might include validation and storing the user's details
-
-        // For now, let's print out the entered username and password
-        System.out.println("Account created for username: " + username + " with password: " + password);
-
-        // Optionally, redirect back to login page after account creation
-        primaryStage.setScene(createLoginScene());
-    }
 
 
     private void showDashboard() {
@@ -201,32 +234,38 @@ public class Main extends Application {
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
-
-
         Menu menMenu = new Menu("Men");
         MenuItem menItem = new MenuItem("Men's Clothing");
         menItem.setOnAction(e -> switchToSection("Men's Clothing"));
+        menMenu.getItems().add(menItem);
 
         Menu womenMenu = new Menu("Women");
         MenuItem womenItem = new MenuItem("Women's Clothing");
         womenItem.setOnAction(e -> switchToSection("Women's Clothing"));
+        womenMenu.getItems().add(womenItem);
 
         Menu bridalMenu = new Menu("Bridal");
-        MenuItem kidsItem = new MenuItem("Bridal' Clothing");
-        kidsItem.setOnAction(e -> switchToSection("Bridal' Clothing"));
+        MenuItem bridalItem = new MenuItem("Bridal' Clothing");
+        bridalMenu.setOnAction(e -> switchToSection("Bridal' Clothing"));
+        bridalMenu.getItems().add(bridalItem);
 
         Menu cartMenu = new Menu("Cart");
         MenuItem cartItem = new MenuItem("Shopping Cart");
         cartItem.setOnAction(e -> switchToSection("Shopping Cart"));
-
-
-        menMenu.getItems().add(menItem);
-        womenMenu.getItems().add(womenItem);
-        bridalMenu.getItems().add(kidsItem);
         cartMenu.getItems().add(cartItem);
 
-        menuBar.getMenus().addAll(menMenu, womenMenu, bridalMenu, cartMenu);
-        menuBar.setStyle("-fx-background-color: #4a5759; -fx-font-size: 16px;  fx-text-color: white;");
+
+        Menu accountMenu = new Menu("Account");
+        MenuItem loginItem = new MenuItem("Login");
+        loginItem.setOnAction(e -> primaryStage.setScene(createLoginScene()));
+
+        MenuItem createAccountItem = new MenuItem("Create Account");
+        createAccountItem.setOnAction(e -> primaryStage.setScene(createAccountCreationScene()));
+
+        accountMenu.getItems().addAll(loginItem, createAccountItem);
+
+        menuBar.getMenus().addAll(menMenu, womenMenu, bridalMenu, cartMenu, accountMenu);
+        menuBar.setStyle("-fx-background-color: #4a5759; -fx-font-size: 16px; fx-text-color: white;");
 
         return menuBar;
     }
@@ -241,7 +280,7 @@ public class Main extends Application {
             borderPane.setCenter(createSectionView("Home"));
         } else if ("Shopping Cart".equals(section)) {
             borderPane.setCenter(createCartView());
-        } else if ("Maternity".equals(section)) {
+        } else if ("Bridal".equals(section)) {
             borderPane.setCenter(maternityPane());
         } else if ("Special".equals(section)) {
             borderPane.setCenter(specialPane());
@@ -257,6 +296,13 @@ public class Main extends Application {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
+        
+        if (!"Home".equals(sectionTitle)) {
+            ImageView logoView = createLogoView();
+            vBox.getChildren().add(logoView);
+        }
+        
+    
 
        // Label sectionLabel = new Label(sectionTitle);
         //sectionLabel.setStyle("-fx-font-size: 24px;");
@@ -350,6 +396,9 @@ public class Main extends Application {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
+        
+        ImageView logoView = createLogoView();
+        vBox.getChildren().add(logoView);
 
         Label cartLabel = new Label("Shopping Cart");
         cartLabel.setStyle("-fx-font-size: 24px;");
