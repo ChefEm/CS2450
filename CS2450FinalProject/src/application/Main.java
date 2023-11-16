@@ -26,6 +26,7 @@ public class Main extends Application {
         primaryStage.setTitle("kiskissing.com");
 
         Scene scene = createLoginScene();
+        
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -77,9 +78,14 @@ public class Main extends Application {
         mainPane.setTop(borderPaneBar);
         mainPane.setCenter(homeSectionView);
         
- 
+        mainPane.setStyle("-fx-background-color: white;");
 
-        Scene scene = new Scene(mainPane, 800, 600);
+     // Create the ScrollPane and set its content
+        ScrollPane scrollMaiPane = new ScrollPane();
+        scrollMaiPane.setContent(mainPane);
+        scrollMaiPane.setFitToWidth(true);
+        scrollMaiPane.setFitToHeight(true);
+        Scene scene = new Scene(scrollMaiPane, 1200, 800);
         primaryStage.setScene(scene);
         
     }
@@ -114,6 +120,7 @@ public class Main extends Application {
         cartMenu.getItems().add(cartItem);
 
         menuBar.getMenus().addAll(homeMenu, menMenu, womenMenu, kidsMenu, cartMenu);
+        menuBar.setStyle("-fx-background-color: #e7c60a;");
 
         return menuBar;
     }
@@ -125,10 +132,18 @@ public class Main extends Application {
 
         if ("Shopping Cart".equals(section)) {
             borderPane.setCenter(createCartView());
-        } else {
-            borderPane.setCenter(createSectionView(section));
-        }
+        } 
+        
+       // else {
+         //   borderPane.setCenter(createSectionView(section));
 
+        if ("Maternity".equals(section)) {
+        	 borderPane.setCenter(maternityPane());
+        }
+        if ("Special".equals(section)) {
+        	
+        }
+       
         primaryStage.setScene(new Scene(borderPane, 800, 600));
     }
 
@@ -142,16 +157,37 @@ public class Main extends Application {
        // FileInputStream inputStream = new FileInputStream("Logo.png");
         Image logo = new Image("Logo.png");
         ImageView logoView = new ImageView(logo);
-     
+        logoView.setFitWidth(250);
+        logoView.setFitHeight(70);
         
-       vBox.getChildren().add(logoView);
+        vBox.getChildren().add(logoView);
 
         if ("Home".equals(sectionTitle)) {
-            vBox.getChildren().addAll(
-                createItemButton("Men's Item 1"),
-                createItemButton("Women's Item 1"),
-                createItemButton("Kids' Item 1")
-            );
+        
+        Image special = new Image("special.jpg");
+        ImageView specialView = new ImageView(special);
+        specialView.setFitWidth(1000);
+        specialView.setFitHeight(500);
+        vBox.getChildren().add(specialView);
+        specialView.setOnMouseClicked(event -> {
+        	switchToSection("Special");
+           
+        });
+    	
+        	
+        HBox hbox= new HBox();
+        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(10));
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().addAll(
+        		sectionImageButton("momLogo.jpg","Materniry"),
+        		sectionImageButton("kidsLogo.jpg","Kid"),
+        		sectionImageButton("babyLogo.jpg","Baby")
+        		);
+        
+        ;
+        vBox.getChildren().addAll(hbox);
+           
         } else {
             vBox.getChildren().addAll(
                 createItemButton(sectionTitle + " Item 1"),
@@ -162,6 +198,43 @@ public class Main extends Application {
         return vBox;
     }
 
+    private ImageView importImage(String imageName)
+    {
+    	ImageView imageView = new ImageView(imageName);
+    	imageView.setFitWidth(100);
+        imageView.setFitHeight(150);
+        
+        return  imageView;
+    }
+    
+    private VBox imageAndButtonBox(String name, String buttonName) 
+ 
+    {
+    	
+    	VBox vbox= new VBox(importImage(name),createItemButton(buttonName));
+    	
+    	return vbox;
+    }
+    private VBox sectionImageButton(String name, String buttonName) 
+    
+    {
+    	
+    	VBox vbox= new VBox(importImage(name),sectionName(buttonName));
+    	vbox.setAlignment(Pos.CENTER);
+    	
+    	return vbox;
+    }
+    
+    private Button sectionName(String sectionName) {
+    	String section = sectionName;
+    	Button name = new Button (sectionName);
+    	name.setOnAction(event ->{
+    		switchToSection(section);
+    		
+    	});
+    	
+    	return name;
+    }
     private Button createItemButton(String itemName) {
         Button itemButton = new Button("Add " + itemName + " to Cart");
         itemButton.setOnAction(event -> {
@@ -192,6 +265,27 @@ public class Main extends Application {
         return vBox;
     }
 
+    private GridPane maternityPane()
+    {
+    	GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.getChildren().addAll(importImage("logo.png"));
+        return gridPane;
+    }
+    private GridPane specialPane() // modify to specials
+    {
+    	GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.getChildren().addAll(importImage("logo.png"));
+        return gridPane;
+    }
+    
     private void showAddedToCartPopup(String itemName) {
         Stage popupStage = new Stage();
         popupStage.initOwner(primaryStage);
