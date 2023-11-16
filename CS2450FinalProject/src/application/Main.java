@@ -56,14 +56,26 @@ public class Main extends Application {
     }
 
     private void showDashboard() {
+       TextField searchField = new TextField();
+    	Label searchLabel = new Label("Search:");
+        searchLabel.setPadding(new Insets(5));
+         
+    	HBox searchBox = new HBox(searchLabel,searchField);
+    	VBox searhAndCartBox = new VBox(searchBox, cartItemCountLabel);
+    	VBox homeSectionView= new VBox( createSectionView("Home"));
+        homeSectionView.setPadding(new Insets(50));
+    	 
         BorderPane borderPane = new BorderPane();
         MenuBar menuBar = createMenuBar();
         borderPane.setTop(menuBar);
-        borderPane.setCenter(createSectionView("Home"));
-        borderPane.setBottom(cartItemCountLabel);
+        borderPane.setRight(searhAndCartBox);
+        
+        
+        VBox Pane= new VBox(borderPane, homeSectionView);
 
-        Scene scene = new Scene(borderPane, 800, 600);
+        Scene scene = new Scene(Pane, 800, 600);
         primaryStage.setScene(scene);
+        
     }
 
     private MenuBar createMenuBar() {
