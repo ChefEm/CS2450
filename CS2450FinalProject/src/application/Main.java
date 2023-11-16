@@ -22,17 +22,44 @@ public class Main extends Application {
     private Label cartItemCountLabel = new Label("Cart Items: 0");
     private String currentUsername;
 
-    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("viviennewestwood.com");
 
         Scene scene = createLoginScene();
-        
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    
+    private VBox createMainPageView() {
+    	VBox mainPageView = new VBox(createLogoView(), createSectionView("Home"));
+        // Add components to mainPageView as needed for your main page
+    	return mainPageView;
+    }
+    
+    private ImageView createLogoView() {
+        Image logo = new Image("logo.jpg"); 
+        ImageView logoView = new ImageView(logo);
+        logoView.setFitWidth(250);
+        logoView.setFitHeight(150);
+
+        logoView.setOnMouseClicked(event -> {
+            BorderPane mainLayout = new BorderPane();
+            mainLayout.setTop(createMenuBar());
+            VBox mainContent = createMainPageView();
+            mainContent.setAlignment(Pos.CENTER); // Center the main content
+            mainLayout.setCenter(mainContent);
+
+            ScrollPane scrollPane = new ScrollPane(mainLayout);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+            primaryStage.setScene(new Scene(scrollPane, 1200, 800));
+        });
+
+        return logoView;
+    }
+    
 
     private Scene createLoginScene() {
         GridPane gridPane = new GridPane();
@@ -119,13 +146,14 @@ public class Main extends Application {
 
 
     private void showDashboard() {
+    	
       TextField searchField = new TextField();
     	Label searchLabel = new Label("Search:");
         searchLabel.setPadding(new Insets(5));
          
     	HBox searchBox = new HBox(searchLabel,searchField);
     	VBox searhAndCartBox = new VBox(searchBox, cartItemCountLabel);
-    	VBox homeSectionView= new VBox( createSectionView("Home"));
+    	VBox homeSectionView = new VBox(createLogoView(), createSectionView("Home"));
         
     	Label userGreeting = new Label("Hello, " + currentUsername); 
     	
@@ -216,12 +244,7 @@ public class Main extends Application {
        // Label sectionLabel = new Label(sectionTitle);
         //sectionLabel.setStyle("-fx-font-size: 24px;");
        // FileInputStream inputStream = new FileInputStream("Logo.png");
-        Image logo = new Image("logo.jpg");
-        ImageView logoView = new ImageView(logo);
-        logoView.setFitWidth(250);
-        logoView.setFitHeight(150);
-        
-        vBox.getChildren().add(logoView);
+
 
         if ("Home".equals(sectionTitle)) {
         
@@ -385,7 +408,7 @@ public class Main extends Application {
 
     private String generateRandomOrderNumber() {
         // Generate a random number for the order
-        // Here we are using a simple random number. You might want to use a more robust method
+        
         int randomNum = 100000 + (int) (Math.random() * 900000); // Generates a 6-digit number
         return "Order #" + randomNum;
     }
@@ -425,7 +448,7 @@ public class Main extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
-        gridPane.getChildren().addAll(importImage("logo.png"));
+        //gridPane.getChildren().addAll(importImage("logo.png"));
         return gridPane;
     }
     private GridPane specialPane() // modify to specials
@@ -435,7 +458,7 @@ public class Main extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
-        gridPane.getChildren().addAll(importImage("logo.png"));
+        //gridPane.getChildren().addAll(importImage("logo.png"));
         return gridPane;
     }
     
