@@ -33,10 +33,16 @@ public class Main extends Application {
     }
     
     private VBox createMainPageView() {
-    	VBox mainPageView = new VBox(createLogoView(), createSectionView("Home"));
-        // Add components to mainPageView as needed for your main page
-    	return mainPageView;
+        VBox mainPageView = new VBox(10); // Spacing between elements
+        mainPageView.setAlignment(Pos.CENTER); // Center alignment
+
+        ImageView logoView = createLogoView();
+        VBox sectionView = createSectionView("Home");
+
+        mainPageView.getChildren().addAll(logoView, sectionView);
+        return mainPageView;
     }
+
     
     private ImageView createLogoView() {
         Image logo = new Image("logo.jpg"); 
@@ -55,6 +61,19 @@ public class Main extends Application {
             scrollPane.setFitToWidth(true);
             scrollPane.setFitToHeight(true);
             primaryStage.setScene(new Scene(scrollPane, 1200, 800));
+            
+            TextField searchField = new TextField();
+            Label searchLabel = new Label("Search:");
+            HBox searchBox = new HBox(searchLabel, searchField);
+            searchBox.setPadding(new Insets(5));
+            searchBox.setAlignment(Pos.CENTER_RIGHT);
+
+            // Create the top bar with the menu bar and the search box
+            HBox topBar = new HBox(createMenuBar(), searchBox);
+            topBar.setAlignment(Pos.CENTER);
+            HBox.setHgrow(searchBox, Priority.ALWAYS);
+            
+            
         });
 
         return logoView;
@@ -69,12 +88,12 @@ public class Main extends Application {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
 
         // Add a title at the top
-        Label titleLabel = new Label("WELCOME");
+        Label titleLabel = new Label("Welcome!");
         titleLabel.setFont(new Font("Arial", 24));
         gridPane.add(titleLabel, 1, 0);
 
         // Load and add an image to the left side
-        Image image = new Image("file:temp.png"); // Update the path
+        Image image = new Image("logo.jpg"); // Update the path
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
@@ -182,9 +201,7 @@ public class Main extends Application {
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
-        Menu homeMenu = new Menu("Home");
-        MenuItem homeItem = new MenuItem("Home");
-        homeItem.setOnAction(e -> switchToSection("Home"));
+
 
         Menu menMenu = new Menu("Men");
         MenuItem menItem = new MenuItem("Men's Clothing");
@@ -202,13 +219,13 @@ public class Main extends Application {
         MenuItem cartItem = new MenuItem("Shopping Cart");
         cartItem.setOnAction(e -> switchToSection("Shopping Cart"));
 
-        homeMenu.getItems().add(homeItem);
+
         menMenu.getItems().add(menItem);
         womenMenu.getItems().add(womenItem);
         bridalMenu.getItems().add(kidsItem);
         cartMenu.getItems().add(cartItem);
 
-        menuBar.getMenus().addAll(homeMenu, menMenu, womenMenu, bridalMenu, cartMenu);
+        menuBar.getMenus().addAll(menMenu, womenMenu, bridalMenu, cartMenu);
         menuBar.setStyle("-fx-background-color: #4a5759; -fx-font-size: 16px;  fx-text-color: white;");
 
         return menuBar;
@@ -264,7 +281,7 @@ public class Main extends Application {
         hbox.setPadding(new Insets(10));
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().addAll(
-        		sectionImageButton("temp.jpg","Materniry"),
+        		sectionImageButton("temp.jpg","Maternity"),
         		sectionImageButton("temp.jpg","Kid"),
         		sectionImageButton("temp.jpg","Baby")
         		);
