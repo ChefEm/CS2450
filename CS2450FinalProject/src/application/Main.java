@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,11 +20,13 @@ public class Main extends Application {
     private Stage primaryStage;
     private Cart cart = new Cart();
     private Label cartItemCountLabel = new Label("Cart Items: 0");
+    private String currentUsername;
 
+    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-         primaryStage.setTitle("viviennewestwood.com");
+        primaryStage.setTitle("viviennewestwood.com");
 
         Scene scene = createLoginScene();
         
@@ -32,6 +35,51 @@ public class Main extends Application {
     }
 
     private Scene createLoginScene() {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+
+        // Add a title at the top
+        Label titleLabel = new Label("WELCOME");
+        titleLabel.setFont(new Font("Arial", 24));
+        gridPane.add(titleLabel, 1, 0);
+
+        // Load and add an image to the left side
+        Image image = new Image("file:temp.png"); // Update the path
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+        gridPane.add(imageView, 0, 1, 1, 3);
+
+        Label userNameLabel = new Label("Username:");
+        gridPane.add(userNameLabel, 0, 4);
+
+        TextField userTextField = new TextField();
+        gridPane.add(userTextField, 1, 4);
+
+        Label pwLabel = new Label("Password:");
+        gridPane.add(pwLabel, 0, 5);
+
+        PasswordField pwBox = new PasswordField();
+        gridPane.add(pwBox, 1, 5);
+
+        Button loginButton = new Button("Sign in");
+        loginButton.setOnAction(event -> {
+            currentUsername = userTextField.getText();
+            showDashboard();
+        });
+        gridPane.add(loginButton, 1, 6);
+
+        Button createAccountButton = new Button("Create Account");
+        createAccountButton.setOnAction(event -> primaryStage.setScene(createAccountCreationScene()));
+        gridPane.add(createAccountButton, 1, 7);
+
+        return new Scene(gridPane, 300, 275);
+    }
+    
+    private Scene createAccountCreationScene() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
@@ -50,13 +98,25 @@ public class Main extends Application {
         PasswordField pwBox = new PasswordField();
         gridPane.add(pwBox, 1, 2);
 
-        Button loginButton = new Button("Sign in");
-        loginButton.setOnAction(event -> showDashboard());
+        Button createAccountButton = new Button("Create Account");
+        createAccountButton.setOnAction(event -> handleAccountCreation(userTextField.getText(), pwBox.getText()));
 
-        gridPane.add(loginButton, 1, 4);
+        gridPane.add(createAccountButton, 1, 4);
 
         return new Scene(gridPane, 300, 275);
     }
+    
+    private void handleAccountCreation(String username, String password) {
+        // Add logic to create an account
+        // This might include validation and storing the user's details
+
+        // For now, let's print out the entered username and password
+        System.out.println("Account created for username: " + username + " with password: " + password);
+
+        // Optionally, redirect back to login page after account creation
+        primaryStage.setScene(createLoginScene());
+    }
+
 
     private void showDashboard() {
       TextField searchField = new TextField();
@@ -67,7 +127,8 @@ public class Main extends Application {
     	VBox searhAndCartBox = new VBox(searchBox, cartItemCountLabel);
     	VBox homeSectionView= new VBox( createSectionView("Home"));
         
-    	 
+    	Label userGreeting = new Label("Hello, " + currentUsername); 
+    	
         BorderPane borderPaneBar = new BorderPane();
         MenuBar menuBar = createMenuBar();
         borderPaneBar.setTop(menuBar);
@@ -130,21 +191,21 @@ public class Main extends Application {
         MenuBar menuBar = createMenuBar();
         borderPane.setTop(menuBar);
 
-        if ("Shopping Cart".equals(section)) {
+        // Handle different sections
+        if ("Home".equals(section)) {
+            borderPane.setCenter(createSectionView("Home"));
+        } else if ("Shopping Cart".equals(section)) {
             borderPane.setCenter(createCartView());
-        } 
-        
-       // else {
-         //   borderPane.setCenter(createSectionView(section));
+        } else if ("Maternity".equals(section)) {
+            borderPane.setCenter(maternityPane());
+        } else if ("Special".equals(section)) {
+            borderPane.setCenter(specialPane());
+        } else {
+            // Default case for other sections, if any
+            borderPane.setCenter(createSectionView(section));
+        }
 
-        if ("Maternity".equals(section)) {
-        	 borderPane.setCenter(maternityPane());
-        }
-        if ("Special".equals(section)) {
-        	
-        }
-       
-        primaryStage.setScene(new Scene(borderPane, 800, 600));
+        primaryStage.setScene(new Scene(borderPane, 1200, 800));
     }
 
     private VBox createSectionView(String sectionTitle) {
@@ -180,9 +241,9 @@ public class Main extends Application {
         hbox.setPadding(new Insets(10));
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().addAll(
-        		sectionImageButton("momLogo.jpg","Materniry"),
-        		sectionImageButton("kidsLogo.jpg","Kid"),
-        		sectionImageButton("babyLogo.jpg","Baby")
+        		sectionImageButton("temp.jpg","Materniry"),
+        		sectionImageButton("temp.jpg","Kid"),
+        		sectionImageButton("temp.jpg","Baby")
         		);
         
         ;
@@ -261,8 +322,100 @@ public class Main extends Application {
             Label itemLabel = new Label(itemName + " - Quantity: " + itemCount);
             vBox.getChildren().add(itemLabel);
         }
+        
+        Button checkoutButton = new Button("Checkout");
+        checkoutButton.setOnAction(event -> primaryStage.setScene(createCheckoutScene()));
+        vBox.getChildren().add(checkoutButton);
 
         return vBox;
+    }
+    
+    private Scene createCheckoutScene() {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+
+        // Add fields for name, number, email, address, city, state, zip, and card number
+        addFieldToGrid(gridPane, "Name:", 0);
+        addFieldToGrid(gridPane, "Phone Number:", 1);
+        addFieldToGrid(gridPane, "Email Address:", 2);
+        addFieldToGrid(gridPane, "Address:", 3);
+        addFieldToGrid(gridPane, "City:", 4);
+        addFieldToGrid(gridPane, "State:", 5);
+        addFieldToGrid(gridPane, "Zip Code:", 6);
+        addCardNumberField(gridPane, "Card Number:", 7);
+
+        // Add a submit button
+        Button submitButton = new Button("Submit");
+        gridPane.add(submitButton, 1, 8);
+        submitButton.setOnAction(event -> handleCheckout()); // Implement this method to handle checkout logic
+
+        return new Scene(gridPane, 400, 500);
+    }
+
+    private void addFieldToGrid(GridPane grid, String label, int row) {
+        grid.add(new Label(label), 0, row);
+        grid.add(new TextField(), 1, row);
+    }
+
+    private void addCardNumberField(GridPane grid, String label, int row) {
+        TextField cardField = new TextField();
+        cardField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                cardField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            if (cardField.getText().length() > 16) {
+                cardField.setText(cardField.getText().substring(0, 16));
+            }
+        });
+        grid.add(new Label(label), 0, row);
+        grid.add(cardField, 1, row);
+    }
+
+    
+    private void handleCheckout() {
+
+    	String orderNumber = generateRandomOrderNumber();
+
+        // Show success popup
+        showOrderSuccessPopup(orderNumber);
+    }
+
+    private String generateRandomOrderNumber() {
+        // Generate a random number for the order
+        // Here we are using a simple random number. You might want to use a more robust method
+        int randomNum = 100000 + (int) (Math.random() * 900000); // Generates a 6-digit number
+        return "Order #" + randomNum;
+    }
+
+    private void showOrderSuccessPopup(String orderNumber) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initOwner(primaryStage);
+
+        VBox popupContent = new VBox(10);
+        popupContent.setAlignment(Pos.CENTER);
+        popupContent.setPadding(new Insets(10));
+        popupContent.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 2;");
+
+        Label successLabel = new Label("Order Successful!");
+        Label orderNumberLabel = new Label(orderNumber);
+
+        // Get the total number of items in the cart
+        int totalItems = cart.getTotalItemCount();
+        Label itemCountLabel = new Label("Total items in cart: " + totalItems);
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> popupStage.close());
+
+        popupContent.getChildren().addAll(successLabel, orderNumberLabel, itemCountLabel, closeButton);
+
+        Scene popupScene = new Scene(popupContent, 300, 150);
+        popupStage.setScene(popupScene);
+
+        popupStage.showAndWait();
     }
 
     private GridPane maternityPane()
