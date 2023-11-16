@@ -54,6 +54,8 @@ public class Main extends Application {
         mainPageView.getChildren().addAll(logoView, sectionView);
         return mainPageView;
     }
+    
+
 
     
     private ImageView createLogoView() {
@@ -61,6 +63,7 @@ public class Main extends Application {
         ImageView logoView = new ImageView(logo);
         logoView.setFitWidth(250);
         logoView.setFitHeight(150);
+        
 
         logoView.setOnMouseClicked(event -> {
             BorderPane mainLayout = new BorderPane();
@@ -197,40 +200,6 @@ public class Main extends Application {
     
 
 
-    private void showDashboard() {
-    	
-      TextField searchField = new TextField();
-    	Label searchLabel = new Label("Search:");
-        searchLabel.setPadding(new Insets(5));
-         
-    	HBox searchBox = new HBox(searchLabel,searchField);
-    	VBox searhAndCartBox = new VBox(searchBox, cartItemCountLabel);
-    	VBox homeSectionView = new VBox(createLogoView(), createSectionView("Home"));
-        
-    	Label userGreeting = new Label("Hello, " + currentUsername); 
-    	
-        BorderPane borderPaneBar = new BorderPane();
-        MenuBar menuBar = createMenuBar();
-        borderPaneBar.setTop(menuBar);
-        borderPaneBar.setRight(searhAndCartBox);
-        
-        
-        BorderPane mainPane= new BorderPane();
-        mainPane.setTop(borderPaneBar);
-        mainPane.setCenter(homeSectionView);
-        
-        mainPane.setStyle("-fx-background-color: white;");
-
-     // Create the ScrollPane and set its content
-        ScrollPane scrollMaiPane = new ScrollPane();
-        scrollMaiPane.setContent(mainPane);
-        scrollMaiPane.setFitToWidth(true);
-        scrollMaiPane.setFitToHeight(true);
-        Scene scene = new Scene(scrollMaiPane, 1200, 800);
-        primaryStage.setScene(scene);
-        
-    }
-
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
@@ -253,8 +222,7 @@ public class Main extends Application {
         MenuItem cartItem = new MenuItem("Shopping Cart");
         cartItem.setOnAction(e -> switchToSection("Shopping Cart"));
         cartMenu.getItems().add(cartItem);
-
-
+       
         Menu accountMenu = new Menu("Account");
         MenuItem loginItem = new MenuItem("Login");
         loginItem.setOnAction(e -> primaryStage.setScene(createLoginScene()));
